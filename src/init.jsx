@@ -4,6 +4,7 @@ import { Router, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 
 import * as stylus from './assets/styles/layout.styl';
+import './assets/styles/font-awesome.css';
 
 
 // Initializes all routes

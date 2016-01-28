@@ -27,7 +27,16 @@ module.exports = {
     loaders: [
       { test: /\.jsx?/, loaders: ['babel'], include: path.join(__dirname, 'src') },
       { test: /\.styl$/, loader: 'style!css!stylus' },
-      { test: /\.png(\?v=\d+\.\d+\.\d+)?$/, loader: 'file'}
+      { test: /\.css$/, loader: 'style!css' },
+      { test: /\.png(\?v=\d+\.\d+\.\d+)?$/, loader: 'file'},
+      { test: /\.svg(\?v=.+)?$/, loader: 'file' },
+
+      // For font-awesome
+      { test: /\.eot(\?v=.+)?$/, loader: 'file' },
+      { test: /\.otf(\?v=.+)?$/, loader: 'file' },
+      { test: /\.woff(\?v=.+)?$/, loader: 'file' },
+      { test: /\.woff2(\?v=.+)?$/, loader: 'file' },
+      { test: /\.ttf(\?v=.+)?$/, loader: 'file' },
     ]
   }
 };
