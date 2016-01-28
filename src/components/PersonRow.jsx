@@ -4,7 +4,6 @@ import reactMixin from 'react-mixin';
 
 class PersonRow extends React.Component {
   handleRowClick(personId) {
-    console.log('hi');
     this.history.pushState(null, '/people/' + personId);
   }
   render() {

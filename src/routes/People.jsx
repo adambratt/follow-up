@@ -8,7 +8,7 @@ class People extends React.Component {
     if (!this.props.people || !this.props.people.size) {
       this.props.dispatch(loadPeople());
     }
-  }  
+  }
   render() {
     return (
       <section className="people">
@@ -45,7 +45,7 @@ People.propTypes = {
 function selectPeople(state) {
   return {
     people: state.people.get('list'),
-    isLoading: state.people.get('isLoading')
+    isLoading: state.people.get('peopleLoading')
   };
 }
 
