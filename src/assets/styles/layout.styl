@@ -7,10 +7,28 @@ body
   line-height 18px
   font-family 'Helvetica Neue', Arial, Helvetica, sans-serif
 
+button
+  border none
+  padding 12px
+  box-sizing border-box
+  font-size 13px
+  cursor pointer
+  outline 0
+  transition background 200ms
+
+input
+  box-sizing border-box
+  outline 0
+
 .header
-  padding 10px
+  position fixed
+  top 0
+  left 0
+  right 0
+  padding 10px 5%
+  height 36px
   background #fff
-  border-bottom 1px solid #fee
+  border-bottom 2px solid #eaeaf3
 
 .logo
   background url('../images/logo.png');
@@ -20,27 +38,55 @@ body
   display block
   text-indent -9999px
   overflow hidden
+  float left
+
+.user
+  float right
+  line-height 36px
+  cursor pointer
+  .fa
+    padding-left 10px
 
 .main
-  width 80%
+  width 90%
+  padding-top 60px
   margin 20px auto
 
 
 .login-box
-  width 400px
-  margin 200px auto 20px auto
+  width 300px
+  margin 120px auto 20px auto
   background #fff
   padding 10px
   input
-    display block
+    display inline-block
     line-height 20px
     font-size 13px
-    margin-bottom 8px
-    border 1px solid #ddd
-    padding 8px
+    border 1px solid $gray-border
+    padding 8px 8px 8px 28px
     width 300px
-    outline 0
-
+    transition border 300ms
+    &:focus
+      border 1px solid darken($gray-border, 10%)
+  label
+    display block
+    margin-bottom 8px
+    position relative
+    i
+      color $gray
+      line-height 20px
+      position absolute
+      top 10px
+      left 8px
+      z-index 9
+  button
+    color $white
+    background-color $green
+    padding 12px
+    width 300px
+    font-size 13px
+    &:hover
+      background-color darken($green, 10%)
 
 .people
   background $white
@@ -95,3 +141,76 @@ body
           background $brown
         &-pending
           background $orange
+
+.person
+  clearfix()
+  &-title
+    margin -20px -20px 0px -20px
+    padding 16px 20px
+    font-size 18px
+    line-height 28px
+    border-bottom 1px solid $gray-border
+    margin-bottom 10px
+    font-weight normal
+    color $gray
+  &-sidebar, &-fields
+    float left
+    box-sizing border-box
+    min-height 300px
+    background $white
+  &-sidebar
+    width 20%
+    padding 20px
+    border-left 1px solid $gray-border
+    border-right 1px solid $gray-border
+    .delete-button
+      display block
+      margin 20px auto 0
+      background-color $red
+      color $white
+      &:hover
+        background-color darken($red, 10%)
+    &-picture
+      width 74px
+      height 74px
+      padding 4px
+      border-radius 40px
+      margin 10px auto
+      background-color $white
+      border 1px solid $gray-border
+      text-align center
+      span
+        display inline-block
+        padding-top 24px
+        color $gray
+      img
+        border-radius 35px
+        width 100%
+  &-fields
+    width 40%
+    padding 20px
+    border-right 1px solid $gray-border
+  &-field
+    margin-bottom 2px
+    line-height 30px
+    &-label
+      display inline-block
+      font-weight bold
+      width 100px
+      text-align right
+      padding-right 10px
+    &-value
+      display inline-block
+      width 200px
+      height 20px
+      cursor pointer
+      i
+        display none
+        float right
+        line-height 30px
+        padding-left 10px
+      &:hover i
+        display inline
+    input
+      padding 6px
+      width 100%

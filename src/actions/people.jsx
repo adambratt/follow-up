@@ -1,6 +1,6 @@
 import { makeHTTPAuthString } from '../utils/http';
 
-const PEOPLE_PER_PAGE = 50;
+const PEOPLE_PER_PAGE = 100;
 export const REQUEST_PEOPLE = 'REQUEST_PEOPLE';
 export const RECEIVE_PEOPLE = 'RECEIVE_PEOPLE';
 export const UPDATE_PERSON = 'UPDATE_PERSON';
@@ -88,11 +88,14 @@ export function loadPeople() {
     const peopleState = getState().people;
     // Don't do anything if we are already loading people
     if (isLoadingPeople(peopleState)) {
+      console.log('stop');
       return;
     }
     const currentPage = peopleState.get('page', 0);
     // Check to make sure there are more pages of people to get
-    if (currentPage && peopleState.get('total') > currentPage * PEOPLE_PER_PAGE) {
+    console.log(currentPage, 'hi');
+    if (currentPage && peopleState.get('total') <= currentPage * PEOPLE_PER_PAGE) {
+      console.log('oops');
       return;
     }
     dispatch(requestPeople(currentPage + 1));
@@ -113,7 +116,7 @@ export function updatePerson(personId, field, value) {
       return;
     }
     fetch('https://api.followupboss.com/v1/people/' + personId, {
-      headers: { authorization: getAPIAuth(getState()) },
+      headers: { authorization: getAPIAuth(getState()), 'Content-Type': 'application/json' },
       method: 'put',
       body: JSON.stringify({[field]: value})
     })

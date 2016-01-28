@@ -17,7 +17,7 @@ class PersonRow extends React.Component {
           </span>
         </div>
         <div className="people-list-person__name">
-          {person.firstName} {person.get('lastName')}
+          {person.get('firstName')} {person.get('lastName')}
         </div>
         <div className="people-list-person__email">
           {person.get('emails').size ? person.getIn(['emails', 0, 'value']) : ''}

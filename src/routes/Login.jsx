@@ -15,14 +15,23 @@ class Login extends React.Component {
       this.history.pushState(null, '/people/');
     }
   }
+  componentDidMount() {
+    this.refs.username.focus();
+  }
   submitForm() {
     attemptUserLogin(this.refs.username.value, this.refs.password.value);
   }
   render() {
     return (
       <div className="login-box">
-        <input type="text" name="username" placeholder="Username" ref="username" />
-        <input type="password" name="password" placeholder="Password" ref="password" />
+        <label className="login-box-username">
+          <i className="fa fa-user" />
+          <input type="text" name="username" placeholder="Email" ref="username" />
+        </label>
+        <label className="login-box-password">
+          <i className="fa fa-key" />
+          <input type="password" name="password" placeholder="Password" ref="password" />
+        </label>
         <button onClick={this.submitForm}>Login</button>
       </div>
     );

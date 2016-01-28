@@ -4,9 +4,27 @@ import { loadPeople } from '../actions/people';
 import PersonRow from '../components/PersonRow';
 
 class People extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleScroll = this.handleScroll.bind(this);
+  }
   componentWillMount() {
     if (!this.props.people || !this.props.people.size) {
       this.props.dispatch(loadPeople());
+    }
+  }
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+  handleScroll(e) {
+    const body = e.srcElement.body;
+    // We trigger auto-load when within 200px of window bottom
+    if (window.innerHeight + body.scrollTop > body.scrollHeight - 200) {
+      this.props.dispatch(loadPeople());
+      console.log(this.props);
     }
   }
   render() {
@@ -22,7 +40,7 @@ class People extends React.Component {
 
         {/* Loop through and render rows */}
 
-        {this.props.people.valueSeq().map(person => (
+        {this.props.people.map(person => (
           <PersonRow person={person} key={person.get('id')} />
         ))}
 
@@ -45,7 +63,7 @@ People.propTypes = {
 function selectPeople(state) {
   return {
     people: state.people.get('list'),
-    isLoading: state.people.get('peopleLoading')
+    isLoading: state.people.get('loadingPeople')
   };
 }
 

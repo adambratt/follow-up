@@ -3,7 +3,7 @@ import Immutable from 'immutable';
 import _ from 'lodash';
 
 const InitialState = new Immutable.Record({
-  list: new Immutable.Map(),
+  list: new Immutable.List(),
   total: null,
   page: 0,
   loadingPeople: false,
@@ -15,8 +15,9 @@ export default function peopleReducer(people = new InitialState(), action) {
   case REQUEST_PEOPLE:
     return people.set('loadingPeople', true);
   case RECEIVE_PEOPLE:
-    return people.set('loadingPeople', false)
-                 .set('list', Immutable.fromJS(_.keyBy(action.people, 'id')))
+    const newPeople = Immutable.fromJS(action.people);
+    return people.set('list', people.get('list').concat(newPeople))
+                 .set('loadingPeople', false)
                  .set('total', action.total)
                  .set('page', action.page);
   case UPDATE_PERSON:
