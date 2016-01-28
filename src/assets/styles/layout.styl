@@ -1,0 +1,97 @@
+@require 'reset.styl';
+@require 'variables.styl';
+
+body
+  background #f5f5f5
+  font-size 13px
+  line-height 18px
+  font-family 'Helvetica Neue', Arial, Helvetica, sans-serif
+
+.header
+  padding 10px
+  background #fff
+  border-bottom 1px solid #fee
+
+.logo
+  background url('../images/logo.png');
+  background-size 100% 100%
+  width 200px
+  height 36px
+  display block
+  text-indent -9999px
+  overflow hidden
+
+.main
+  width 80%
+  margin 20px auto
+
+
+.login-box
+  width 400px
+  margin 200px auto 20px auto
+  background #fff
+  padding 10px
+  input
+    display block
+    line-height 20px
+    font-size 13px
+    margin-bottom 8px
+    border 1px solid #ddd
+    padding 8px
+    width 300px
+    outline 0
+
+
+.people
+  background $white
+
+.people-list
+  &-loader
+    height 200px
+    text-align center
+    padding 20px
+  &-header
+    font-weight bold
+    cursor auto !important
+    &:hover
+      background transparent !important
+  &-person
+    clearfix()
+    padding 12px 8px
+    border-bottom 1px solid $gray-border
+    box-sizing border-box
+    cursor pointer
+    &:last-child
+      border-bottom none
+    &:hover
+      background $yellow-light
+    &__name, &__email, &__phone, &__stage, &__agent
+      display inline-block
+      padding-right 15px
+      vertical-align top
+      box-sizing border-box
+    &__name, &__email, &__phone, &__agent
+      width calc(.25 * (100% - 85px))
+      text-overflow ellipsis
+      white-space nowrap
+      overflow hidden
+    &__stage
+      width 85px
+      .stage
+        display inline-block
+        height 18px
+        padding 0px 5px
+        background $orange
+        color $white
+        border-radius 3px
+        font-size 10px
+        &-seller, &-nurture
+          background $green
+        &-buyer
+          background $blue
+        &-hotprospect
+          background $red
+        &-lead
+          background $brown
+        &-pending
+          background $orange
