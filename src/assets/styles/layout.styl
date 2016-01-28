@@ -15,6 +15,9 @@ button
   cursor pointer
   outline 0
   transition background 200ms
+  &:disabled
+    background-color $gray !important
+    cursor auto
 
 input
   box-sizing border-box
@@ -52,12 +55,20 @@ input
   padding-top 60px
   margin 20px auto
 
+.error-box
+  background $red
+  border 1px solid darken($red, 10%)
+  color $white
+  padding 10px
+  font-size 11px
+  margin-bottom 10px
 
 .login-box
   width 300px
   margin 120px auto 20px auto
   background #fff
-  padding 10px
+  border 1px solid $gray-border
+  padding 20px
   input
     display inline-block
     line-height 20px
@@ -65,9 +76,10 @@ input
     border 1px solid $gray-border
     padding 8px 8px 8px 28px
     width 300px
-    transition border 300ms
+    transition all 300ms
     &:focus
       border 1px solid darken($gray-border, 10%)
+      background-color $yellow-light
   label
     display block
     margin-bottom 8px
