@@ -56,6 +56,7 @@ This project is setup with the following key libraries:
 It's also important to note that we store login information in local storage so that you can reload the page without issue.
 
 There are a few areas in this app that could be improved:
+* Agents, Stages, and Sources are hard coded rather than pulling from the server. This was done in the interest of time
 * Stylesheets are a bit messy and could use some more organization
 * We don't GET the person again (we use the cache from people list) when loading the person page so if another user was editing it could cause conflicts.
 * Login/Logout are not synced across browser windows. Could be done easily with a listener on localStorage
