@@ -27,7 +27,6 @@ class PersonContactField extends React.Component {
   removeContact(key) {
     // Don't allow removing last contact
     if (this.state.contacts.size < 2) {
-      console.log('oops');
       return;
     }
     // If this was the primary, make the new first contact the primary

@@ -45,7 +45,7 @@ export default class SelectDropdown extends React.Component {
 
 SelectDropdown.propTypes = {
   items: React.PropTypes.object,
-  value: React.PropTypes.string,
+  value: React.PropTypes.any,
   defaultText: React.PropTypes.string,
   onChange: React.PropTypes.func
 };

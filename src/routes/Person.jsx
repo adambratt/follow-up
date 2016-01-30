@@ -1,15 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { updatePerson } from '../actions/people';
+import PersonSelectField from '../components/PersonSelectField';
 import PersonInputField from '../components/PersonInputField';
 import PersonContactField from '../components/PersonContactField';
 import { History, Link } from 'react-router';
 import reactMixin from 'react-mixin';
+import _ from 'lodash';
+import stages from '../utils/stages';
+import agents from '../utils/agents';
+import sources from '../utils/sources';
 
 class Person extends React.Component {
   inputChange(field) {
     return value => {
-      console.log(field + ' changed to ', value);
       this.props.dispatch(updatePerson(this.props.person.get('id'), field, value));
     };
   }
@@ -19,6 +23,15 @@ class Person extends React.Component {
     }
   }
   render() {
+    if (!this.props.person) {
+      return (
+        <div className='person'>Error loading page</div>
+      );
+    }
+
+    // Have to do this to get the sourceId as it's not returned in the people API
+    const sourceId = _.findKey(sources, source => source === this.props.person.get('source')) || 1;
+
     return (
       <div className="person">
         <div className="breadcrumbs">
@@ -27,6 +40,7 @@ class Person extends React.Component {
             Viewing {this.props.person.get('firstName')} {this.props.person.get('lastName')}
           </span>
         </div>
+
         <div className="person-sidebar">
           <div className="person-sidebar-picture">
             {this.props.person.get('picture') ? (
@@ -39,24 +53,29 @@ class Person extends React.Component {
             Delete Person
           </button>
         </div>
+
         <div className="person-fields">
           <h2 className="person-title">Profile Info</h2>
           <PersonInputField label="First Name" onChange={this.inputChange('firstName')}
              value={this.props.person.get('firstName')} />
           <PersonInputField label="Last Name" onChange={this.inputChange('lastName')}
              value={this.props.person.get('lastName')} />
-          <PersonInputField label="Source" onChange={this.inputChange('source')}
-             value={this.props.person.get('source')} />
-           <PersonInputField label="Assigned Agent" onChange={this.inputChange('assignedTo')}
-              value={this.props.person.get('assignedTo')} />
+          <PersonSelectField label="Source" onChange={this.inputChange('sourceId')}
+             value={sourceId} values={sources} />
+          <PersonSelectField label="Assigned Agent" onChange={this.inputChange('assignedUserId')}
+             value={this.props.person.get('assignedUserId')} values={agents} />
+           <PersonSelectField label="Stage" onChange={this.inputChange('stage')}
+              value={this.props.person.get('stage')} values={stages} />
          </div>
+
          <div className="person-fields">
            <h2 className="person-title">Contact Info</h2>
            <PersonContactField label="Email Addresses" contacts={this.props.person.get('emails')}
               onChange={this.inputChange('emails')} />
            <PersonContactField label="Phone Numbers" contacts={this.props.person.get('phones')}
               onChange={this.inputChange('phones')} />
-          </div>
+         </div>
+
       </div>
     );
   }

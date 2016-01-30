@@ -112,6 +112,10 @@ export function updatePerson(personId, field, value) {
     if (isLoadingPerson(peopleState)) {
       return;
     }
+    // Hack to make it so we can edit source
+    if (field === 'sourceId') {
+      personId += '?overwriteSource=1';
+    }
     fetch('https://api.followupboss.com/v1/people/' + personId, {
       headers: { authorization: getAPIAuth(getState()), 'Content-Type': 'application/json' },
       method: 'put',
@@ -119,7 +123,7 @@ export function updatePerson(personId, field, value) {
     })
     .then(response => response.json())
     .then(data => {
-      dispatch(updatePersonAction(data));
+      dispatch(updatePersonAction(personId, data));
     });
   };
 }

@@ -30,7 +30,6 @@ class People extends React.Component {
     // We trigger auto-load when within 200px of window bottom
     if (window.innerHeight + body.scrollTop > body.scrollHeight - 200) {
       this.props.dispatch(loadPeople());
-      console.log(this.props);
     }
   }
   render() {
@@ -53,7 +52,15 @@ class People extends React.Component {
         {/* Loading Status */}
 
         {this.props.isLoading ? (
-          <div className="people-list-loader">Loading</div>
+          <div className="people-list-loader">
+            {/* Taken from http://tobiasahlin.com/spinkit/ */}
+            <div className="sk-folding-cube">
+              <div className="sk-cube1 sk-cube"></div>
+              <div className="sk-cube2 sk-cube"></div>
+              <div className="sk-cube4 sk-cube"></div>
+              <div className="sk-cube3 sk-cube"></div>
+            </div>
+          </div>
         ) : ''}
       </section>
     );

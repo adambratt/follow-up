@@ -21,8 +21,9 @@ export default function peopleReducer(people = new InitialState(), action) {
                  .set('total', action.total)
                  .set('page', action.page);
   case UPDATE_PERSON:
+    const match = people.get('list').findIndex(person => person.get('id') === action.personId);
     return people.set('loadingPerson', false)
-                 .setIn(['list', action.personId], action.person);
+                 .setIn(['list', match], Immutable.fromJS(action.person));
   default:
     return people;
   }
