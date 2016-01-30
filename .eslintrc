@@ -23,6 +23,8 @@
     "react/react-in-jsx-scope": 2,
     "react/no-unknown-property": 2,
     "react/prop-types": 2,
+    // I like 3 space indentation when putting element props on a new line
+    "react/jsx-indent-props": [2, 3],
   },
   "plugins": [
     "babel",
