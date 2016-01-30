@@ -1,0 +1,53 @@
+@require 'variables.styl'
+
+.dropdown-menu
+  position relative
+  display inline-block
+  font-size 11px
+  &__button, &__list li
+    box-sizing border-box
+    font-size 11px
+    line-height 13px
+    padding 6px 1em
+  &__button
+    background $white
+    color $black
+    border 1px solid $gray-border
+    display block
+    &:after
+      display inline-block
+      content '▼'
+      font-size 8px
+      color $gray
+      position absolute
+      right 10px
+    &:hover
+      cursor pointer
+  &--active
+    .dropdown-menu__button:after
+      transform rotate(180deg)
+    .dropdown-menu__list
+      display block
+  &__list
+    position absolute
+    top 100%
+    right 0
+    margin 0
+    padding 0
+    width 100%
+    display none
+    z-index 9999
+    max-height 240px
+    border-bottom 1px solid $gray-border
+    overflow-y scroll
+    li
+      list-style none
+      background-color $white
+      color $black
+      border 1px solid $gray-border
+      border-top none
+      &:last-child
+        border-bottom none
+      &:hover
+        background-color $yellow-light
+        cursor pointer
