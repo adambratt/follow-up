@@ -22,6 +22,7 @@ button
 input
   box-sizing border-box
   outline 0
+  border 1px solid $gray-border
 
 .header
   position fixed
@@ -100,6 +101,24 @@ input
     &:hover
       background-color darken($green, 10%)
 
+
+.breadcrumbs
+  clear both
+  padding 10px 20px
+  background $white
+  border 1px solid $gray-border
+  margin-bottom 20px
+  .breadcrumb
+    margin-right 8px
+    a
+      text-decoration none
+      color $blue
+    &:after
+      padding-left 8px
+      content '>'
+    &:last-child:after
+      content ''
+
 .people
   background $white
 
@@ -168,8 +187,10 @@ input
   &-sidebar, &-fields
     float left
     box-sizing border-box
-    min-height 300px
+    min-height 500px
     background $white
+    border-top 1px solid $gray-border
+    border-bottom 1px solid $gray-border
   &-sidebar
     width 20%
     padding 20px
@@ -226,3 +247,122 @@ input
     input
       padding 6px
       width 100%
+  &-contacts
+    padding-bottom 30px
+    cursor pointer
+    clearfix()
+    &:hover
+      .edit
+        display block
+      label
+        cursor pointer
+    &.editing
+      cursor auto
+      &:hover
+        background-color transparent
+        label
+          cursor auto
+    .edit
+      float right
+      color $black
+      display none
+    &-label
+      display block
+      font-weight bold
+      margin-bottom 10px
+    button
+      margin-left 10px
+      display block
+    &-add
+      background transparent
+      padding 0px
+      color $blue
+      margin-top 6px
+    &-save
+      background $green
+      color $white
+      padding 6px
+      width 80px
+      margin-top 12px
+      &:hover
+        background darken($green, 10%)
+  &-contact
+    padding-left 10px
+    margin-bottom 6px
+    box-sizing border-box
+    &-value, &-type
+      box-sizing border-box
+      padding 6px
+      display inline-block
+      margin-right 6px
+    &-value
+      width calc(.6 * (100% - 50px))
+    &-type
+      width calc(.4 * (100% - 50px))
+    &-input
+      padding 6px
+      margin-right 6px
+      width calc(.6 * (100% - 50px))
+    .dropdown-menu
+      width calc(.4 * (100% - 50px))
+      margin-right 8px
+    i
+      cursor pointer
+      margin-right 6px
+      color $gray
+      &.fa-star
+        color $yellow
+      &.fa-trash:hover
+        color $red
+
+.dropdown-menu
+  position relative
+  display inline-block
+  font-size 11px
+  &__button, &__list li
+    box-sizing border-box
+    font-size 11px
+    line-height 13px
+    padding 6px 1em
+  &__button
+    background $white
+    color $black
+    border 1px solid $gray-border
+    display block
+    &:after
+      display inline-block
+      content '▼'
+      font-size 8px
+      color $gray
+      position absolute
+      right 10px
+    &:hover
+      cursor pointer
+  &--active
+    .dropdown-menu__button:after
+      transform rotate(180deg)
+    .dropdown-menu__list
+      display block
+  &__list
+    position absolute
+    top 100%
+    right 0
+    margin 0
+    padding 0
+    width 100%
+    display none
+    z-index 9999
+    max-height 240px
+    border-bottom 1px solid $gray-border
+    overflow-y scroll
+    li
+      list-style none
+      background-color $white
+      color $black
+      border 1px solid $gray-border
+      border-top none
+      &:last-child
+        border-bottom none
+      &:hover
+        background-color $yellow-light
+        cursor pointer

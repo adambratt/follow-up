@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { loadPeople } from '../actions/people';
 import PersonRow from '../components/PersonRow';
+import { History } from 'react-router';
+import reactMixin from 'react-mixin';
 
 class People extends React.Component {
   constructor(props) {
@@ -9,6 +11,10 @@ class People extends React.Component {
     this.handleScroll = this.handleScroll.bind(this);
   }
   componentWillMount() {
+    if (!this.props.user || !this.props.user.get('id')) {
+      this.history.pushState(null, '/');
+      return;
+    }
     if (!this.props.people || !this.props.people.size) {
       this.props.dispatch(loadPeople());
     }
@@ -54,16 +60,20 @@ class People extends React.Component {
   }
 }
 
+reactMixin.onClass(People, History);
+
 People.propTypes = {
   people: React.PropTypes.object,
   dispatch: React.PropTypes.func.isRequired,
-  isLoading: React.PropTypes.bool
+  isLoading: React.PropTypes.bool,
+  user: React.PropTypes.object
 };
 
 function selectPeople(state) {
   return {
     people: state.people.get('list'),
-    isLoading: state.people.get('loadingPeople')
+    isLoading: state.people.get('loadingPeople'),
+    user: state.user
   };
 }
 

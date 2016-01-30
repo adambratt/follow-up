@@ -88,14 +88,11 @@ export function loadPeople() {
     const peopleState = getState().people;
     // Don't do anything if we are already loading people
     if (isLoadingPeople(peopleState)) {
-      console.log('stop');
       return;
     }
     const currentPage = peopleState.get('page', 0);
     // Check to make sure there are more pages of people to get
-    console.log(currentPage, 'hi');
     if (currentPage && peopleState.get('total') <= currentPage * PEOPLE_PER_PAGE) {
-      console.log('oops');
       return;
     }
     dispatch(requestPeople(currentPage + 1));
