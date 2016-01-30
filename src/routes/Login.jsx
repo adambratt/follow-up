@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { attemptUserLogin } from '../actions/user';
+import { attemptUserLogin, checkUserStorage } from '../actions/user';
 import { History } from 'react-router';
 import reactMixin from 'react-mixin';
 import ErrorBox from '../components/ErrorBox';
@@ -10,6 +10,13 @@ class Login extends React.Component {
     super(props);
     this.submitForm = this.submitForm.bind(this);
     this.inputKeyPress = this.inputKeyPress.bind(this);
+  }
+  componentWillMount() {
+    if (this.props.user && this.props.user.get('id')) {
+      this.history.pushState(null, '/people/');
+    } else {
+      checkUserStorage();
+    }
   }
   componentWillUpdate(nextProps) {
     if (nextProps.user && nextProps.user.get('id')) {
