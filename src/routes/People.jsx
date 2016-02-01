@@ -51,7 +51,7 @@ class People extends React.Component {
 
         {/* Loading Status */}
 
-        {this.props.isLoading ? (
+        {this.props.isLoadingPeople ? (
           <div className="people-list-loader">
             {/* Taken from http://tobiasahlin.com/spinkit/ */}
             <div className="sk-folding-cube">
@@ -72,14 +72,16 @@ reactMixin.onClass(People, History);
 People.propTypes = {
   people: React.PropTypes.object,
   dispatch: React.PropTypes.func.isRequired,
-  isLoading: React.PropTypes.bool,
+  isLoadingPeople: React.PropTypes.bool,
+  appLoaded: React.PropTypes.bool,
   user: React.PropTypes.object
 };
 
 function selectPeople(state) {
   return {
     people: state.people.get('list'),
-    isLoading: state.people.get('loadingPeople'),
+    isLoadingPeople: state.people.get('loadingPeople'),
+    appLoaded: state.people.get('appLoaded'),
     user: state.user
   };
 }

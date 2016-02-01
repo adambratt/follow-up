@@ -4,6 +4,7 @@ const PEOPLE_PER_PAGE = 100;
 export const REQUEST_PEOPLE = 'REQUEST_PEOPLE';
 export const RECEIVE_PEOPLE = 'RECEIVE_PEOPLE';
 export const UPDATE_PERSON = 'UPDATE_PERSON';
+export const APP_LOADED = 'APP_LOADED';
 
 
 function requestPeopleAction() {
@@ -26,6 +27,15 @@ function updatePersonAction(personId, personData) {
     type: UPDATE_PERSON,
     person: personData,
     personId
+  };
+}
+
+function appLoadedAction(agents, sources, stages) {
+  return {
+    type: APP_LOADED,
+    agents,
+    sources,
+    stages
   };
 }
 
@@ -80,6 +90,87 @@ function isLoadingPerson(state) {
 }
 
 /**
+ * Gets a list of all the valid agents for a Person
+ *
+ * @param {str} auth string for requests
+ * @returns Promise that resolves to list of agents
+ */
+function getAgents(auth) {
+  return new Promise((resolve, reject) => {
+    fetch('https://api.followupboss.com/v1/users?limit=100', {
+      headers: { authorization: auth, 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Return an array of [k, v] pairs ordered by agent last name
+      const agents = _.map(
+        _.orderBy(_.reject(data.users, agent => agent.role === 'Lender'), 'lastName', 'asc'),
+        agent => [agent.id, agent.name]
+      );
+      resolve(agents);
+    });
+  });
+}
+
+/**
+ * Gets a list of all the valid lead sources for a Person
+ *
+ * @param {str} auth string for requests
+ * @returns Promise that resolves to list of sources
+ */
+function getSources(auth) {
+  return new Promise((resolve, reject) => {
+    fetch('https://api.followupboss.com/v1/leadSources?limit=100', {
+      headers: { authorization: auth, 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Return an array of [k, v] pairs ordered by source name with 1, <unspecified> being the first
+      const sources = _.map(
+        _.orderBy(data.leadsources, 'name', 'asc'),
+        source => [source.id, source.name]
+      );
+      resolve(sources);
+    });
+  });
+}
+
+/**
+ * Gets a list of all the valid stages for a Person
+ *
+ * @param {str} auth string for requests
+ * @returns Promise that resolves to list of stages
+ */
+function getStages(auth) {
+  return new Promise((resolve, reject) => {
+    fetch('https://api.followupboss.com/v1/stages?limit=100', {
+      headers: { authorization: auth, 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(data => {
+      const stages = _.fromPairs(_.map(data.stages, stage => [stage.id, stage.name]));
+      resolve(stages);
+    });
+  });
+}
+
+/**
+ * Loads the intial app data: sources, agents, and stages and then sets the store
+ * key for appLoaded to true when they all return.
+ *
+ * Note: there's no error handling here at the moment
+ */
+export function loadAppData() {
+  return (dispatch, getState) => {
+    const auth = getAPIAuth(getState());
+    // Make sure all 3 requests resolve before we mark the app as loaded
+    Promise.all([getAgents(auth), getSources(auth), getStages(auth)]).then((data) => {
+      dispatch(appLoadedAction(data[0], data[1], data[2]));
+    });
+  };
+}
+
+/**
  * Checks to see if we are currently able to load more people and then fires an action
  * to load the next available page
  */
@@ -96,6 +187,7 @@ export function loadPeople() {
       return;
     }
     dispatch(requestPeople(currentPage + 1));
+    dispatch(loadAppData());
   };
 }
 
@@ -113,17 +205,20 @@ export function updatePerson(personId, field, value) {
       return;
     }
     // Hack to make it so we can edit source
+    let q = '';
     if (field === 'sourceId') {
-      personId += '?overwriteSource=1';
+      q += '?overwriteSource=1';
     }
-    fetch('https://api.followupboss.com/v1/people/' + personId, {
+    fetch('https://api.followupboss.com/v1/people/' + personId + q, {
       headers: { authorization: getAPIAuth(getState()), 'Content-Type': 'application/json' },
       method: 'put',
       body: JSON.stringify({[field]: value})
     })
     .then(response => response.json())
     .then(data => {
-      dispatch(updatePersonAction(personId, data));
+      if (data.id) {
+        dispatch(updatePersonAction(personId, data));
+      }
     });
   };
 }

@@ -7,9 +7,6 @@ import PersonContactField from '../components/PersonContactField';
 import { History, Link } from 'react-router';
 import reactMixin from 'react-mixin';
 import _ from 'lodash';
-import stages from '../utils/stages';
-import agents from '../utils/agents';
-import sources from '../utils/sources';
 
 class Person extends React.Component {
   inputChange(field) {
@@ -30,7 +27,8 @@ class Person extends React.Component {
     }
 
     // Have to do this to get the sourceId as it's not returned in the people API
-    const sourceId = _.findKey(sources, source => source === this.props.person.get('source')) || 1;
+    const source =  _.find(this.props.sources, source => source[1] === this.props.person.get('source'));
+    const sourceId = source ? source[0] : 1;
 
     return (
       <div className="person">
@@ -61,11 +59,11 @@ class Person extends React.Component {
           <PersonInputField label="Last Name" onChange={this.inputChange('lastName')}
              value={this.props.person.get('lastName')} />
           <PersonSelectField label="Source" onChange={this.inputChange('sourceId')}
-             value={sourceId} values={sources} />
+             value={sourceId} values={this.props.sources} />
           <PersonSelectField label="Assigned Agent" onChange={this.inputChange('assignedUserId')}
-             value={this.props.person.get('assignedUserId')} values={agents} />
+             value={this.props.person.get('assignedUserId')} values={this.props.agents} />
            <PersonSelectField label="Stage" onChange={this.inputChange('stage')}
-              value={this.props.person.get('stage')} values={stages} />
+              value={this.props.person.get('stage')} values={this.props.stages} />
          </div>
 
          <div className="person-fields">
@@ -87,14 +85,20 @@ Person.propTypes = {
   person: React.PropTypes.object,
   params: React.PropTypes.object,
   dispatch: React.PropTypes.func,
-  user: React.PropTypes.object
+  user: React.PropTypes.object,
+  stages: React.PropTypes.object,
+  sources: React.PropTypes.any,
+  agents: React.PropTypes.any
 };
 
 function selectPerson(state, props) {
   return {
     // Find a match in list - coerce ID to a string for comparison with URL param
     person: state.people.list.find(person => props.params.personId === person.get('id') + ''),
-    user: state.user
+    user: state.user,
+    stages: state.people.get('stages'),
+    sources: state.people.get('sources'),
+    agents: state.people.get('agents')
   };
 }
 
